@@ -7,16 +7,17 @@ export const getWeatherDataByLocation = async (req, res) => {
     const cityCoordsURL = `https://geocoding-api.open-meteo.com/v1/search?name=${location}&count=1&language=en&format=json`;
     const cityCoords = await fetch(cityCoordsURL);
     const coordinates = await cityCoords.json();
+    const countryName = coordinates.results[0].country;
     const { latitude: lat, longitude: lng } = coordinates.results[0];
 
     const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&hourly=temperature_2m,precipitation_probability,rain,showers,relative_humidity_2m,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset,uv_index_max&timezone=Europe/Bucharest`;
 
     const response = await fetch(weatherURL);
-    const data = await response.json();
+    const weatherData = await response.json();
 
     res.status(201).json({
-      data: data,
-      message: "Weather returned successfully",
+      weatherData,
+      countryName
     });
   } catch (error) {
     console.error(error);
