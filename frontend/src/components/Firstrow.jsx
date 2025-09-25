@@ -5,7 +5,7 @@ import MapSvg from "../assets/map.svg?react";
 import { useWeather } from "../weather/weather.js";
 
 function Firstrow() {
-  const { setCoords, postCoords, weatherData, loading, location } = useWeather();
+  const { setCoords, postCoords, weatherData, loading, location,countryName } = useWeather();
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -35,6 +35,7 @@ function Firstrow() {
               <Heading as="h1">
                 {weatherData ? `${location}: ${weatherData.current_weather.temperature}°` : "Loading..."}
               </Heading>
+
             </Flex>
           </Box>
           <MapSvg style={{ width: "100%", height: "100%" }} />
