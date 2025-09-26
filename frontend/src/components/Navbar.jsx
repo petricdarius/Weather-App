@@ -27,15 +27,6 @@ const Navbar = () => {
   const [city, input] = useState({
     city: "",
   });
-  useEffect(() => {
-    if (city.city) {
-      const sendCity = async () => {
-        await postLocation(city.city);
-      };
-      sendCity();
-    }
-  }, [city.city]);
-
   const locale = "ro-RO";
   const formattedDate = new Intl.DateTimeFormat(locale, options).format(now);
   return (
@@ -57,10 +48,13 @@ const Navbar = () => {
             maxW={{ base: "100px", sm: "200px" }}
             placeholder="⌕ Oras sau cod postal"
             borderRadius="20px"
+            value={city.city} // 👈 valoarea controlată
+            onChange={(e) => input({ city: e.target.value })}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                input({ city: e.target.value });
-                console.log("Submitted city:", e.target.value);
+                postLocation(city.city); // trimite la server direct
+                input({ city: "" }); // resetează input-ul
+                console.log("Submitted city:", city.city);
               }
             }}
           />

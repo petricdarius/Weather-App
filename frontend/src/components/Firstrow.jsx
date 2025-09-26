@@ -2,6 +2,7 @@ import {
   Box,
   Container,
   Flex,
+  GridItem,
   Heading,
   Image,
   SimpleGrid,
@@ -81,63 +82,129 @@ function Firstrow() {
     if (!weatherData) return null;
     return weatherData.current_weather.weathercode;
   }, [weatherData]);
-  console.log(weatherData);
-  console.log(weatherCode);
+  let timeWeather;
+  timeWeather = React.useMemo(() => {
+    if (!weatherData) return null;
+    return weatherData.hourly;
+  }, [weatherData]);
+  console.log(timeWeather);
   return (
-    <Container>
-      <Flex
-        w="100%"
-        alignItems="center"
-        justifyContent="space-between"
-        flexDir={{ base: "column", sm: "row" }}
-      >
-        <SimpleGrid columns={{ base: 1, sm: 2 }} gap="20px">
-          <Box h="200px">
-            <SimpleGrid columns={{ base: 2, sm: 5 }} gap="40px">
-              <Image src={RainImg} alt="Rain" boxSize="64px" />
-              <Flex flexDir="column">
-                <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
-                  {weatherData
-                    ? `${location[0].toUpperCase()}${location.slice(1)}`
-                    : "Loading..."}
-                </Heading>
-                <Heading as="h2" ms={"-5"}>
-                  {countryName}
-                </Heading>
-              </Flex>
-              <Flex flexDir="column">
-                <Heading as="h1" fontSize="35px" mb={2}>
-                  {curTemperature}°
-                </Heading>
-                <Heading as="h2">Temperature</Heading>
-              </Flex>
-              <Flex flexDir="column">
-                <Heading as="h1" fontSize="35px">
-                  {humidity}
-                  <Box as="span" fontSize="14px" verticalAlign="baseline">
-                    %
-                  </Box>
-                </Heading>
-                <Heading as="h2">Humidity</Heading>
-              </Flex>
-              <Flex flexDir="column">
-                <Heading as="h1" fontSize="35px">
-                  {curWindSpeed}
-                  <Box as="span" fontSize="14px" verticalAlign="baseline">
-                    km/h
-                  </Box>
-                </Heading>
-                <Heading as="h2">Windspeed</Heading>
-              </Flex>
-            </SimpleGrid>
-          </Box>
-
-          <Box display={{ base: "none", sm: "block" }}>
-            <MapSvg width="100%" height="100%" />
-          </Box>
+    <Flex
+      maxW="90%"
+      mx="auto"
+      alignItems="center"
+      justifyContent="space-between"
+      flexDir={{ base: "column", sm: "row" }}
+      gap={{ base: 10, sm: 8 }}
+    >
+      <Box flex={{ base: "1", sm: "0 0 60%" }}>
+        <SimpleGrid
+          py={20}
+          px={10}
+          columns={{ base: 2, sm: 5 }}
+          rows={{ base: 2, sm: 2 }}
+          overflow={"scroll"}
+          scrollbarWidth={"none"}
+          gap="40px"
+          bgColor="blue.100"
+          borderRadius="30px"
+        >
+          <Image src={RainImg} alt="Rain" boxSize="64px"
+          display={{ base: "none", sm: "block" }}
+          />
+          <Flex flexDir="column">
+            <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
+              {weatherData
+                ? `${location[0].toUpperCase()}${location.slice(1)}`
+                : "Loading..."}
+            </Heading>
+            <Heading as="h2" ms={"-5"}>
+              {countryName}
+            </Heading>
+          </Flex>
+          <Flex flexDir="column">
+            <Heading as="h1" fontSize="35px" mb={2}>
+              {curTemperature}°
+            </Heading>
+            <Heading as="h2">Temperature</Heading>
+          </Flex>
+          <Flex flexDir="column">
+            <Heading as="h1" fontSize="35px">
+              {humidity}
+              <Box as="span" fontSize="14px" verticalAlign="baseline">
+                %
+              </Box>
+            </Heading>
+            <Heading as="h2">Humidity</Heading>
+          </Flex>
+          <Flex flexDir="column">
+            <Heading as="h1" fontSize="35px">
+              {curWindSpeed}
+              <Box as="span" fontSize="14px" verticalAlign="baseline">
+                km/h
+              </Box>
+            </Heading>
+            <Heading as="h2">Windspeed</Heading>
+          </Flex>
+          <GridItem colSpan={{ base: 2, sm: 5 }}>
+            <Flex
+              overflowX="auto"
+              gap={4}
+              w="100%"
+              py={2}
+              css={{
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  width: "6px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  borderRadius: "24px",
+                },
+              }}
+            >
+              {timeWeather?.time.map((t, idx) => (
+                <Flex
+                  key={idx}
+                  flex="0 0 auto"
+                  flexDir="column"
+                  bg="blue.300"
+                  borderRadius="30px"
+                  justify="center"
+                  alignItems="center"
+                  p={5}
+                  minW="120px"
+                >
+                  <Heading
+                    as="h1"
+                    fontSize="25px"
+                    lineHeight="1"
+                    fontWeight={"light"}
+                    m={0}
+                    mb={2}
+                  >
+                    {t.slice(11)} {t.slice(11, 13) < 12 ? "AM" : "PM"}
+                  </Heading>
+                  <Image src={RainImg} alt="Rain" boxSize="64px" />
+                  <Heading as="h1" fontSize="25px" lineHeight="1" m={0} mt={2}>
+                    {timeWeather.temperature_2m[idx]}°
+                  </Heading>
+                </Flex>
+              ))}
+            </Flex>
+          </GridItem>
         </SimpleGrid>
-      </Flex>
-    </Container>
+      </Box>
+
+      <Box
+        flex={{ base: "1", sm: "0 0 40%" }}
+        ms={{ base: 0, sm: 10 }}
+        display={{ base: "none", sm: "block" }}
+      >
+        <MapSvg width="50%" height="50%" />
+      </Box>
+    </Flex>
   );
 }
 
