@@ -5,9 +5,10 @@ import { Box, Button } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Firstrow from "./components/Firstrow";
 import { useColorMode } from "./components/ui/color-mode";
+import ChartComponent from "./components/ChartComponent";
 
 function App() {
-  const { colorMode } = useColorMode(); 
+  const { colorMode } = useColorMode();
 
   const bgGradient =
     colorMode === "light"
@@ -19,6 +20,7 @@ function App() {
       <Navbar />
       <Box mt={10}>
         <Firstrow />
+        <ChartComponent />
       </Box>
     </Box>
   );

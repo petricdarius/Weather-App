@@ -133,7 +133,7 @@ function Firstrow() {
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
               {weatherData
-                ? `${location[0].toUpperCase()}${location.slice(1)}`
+                ? location
                 : "Loading..."}
             </Heading>
             <Heading as="h2" ms={"-5"}>

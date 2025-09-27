@@ -10,7 +10,11 @@ function ChangeView({ center, zoom }) {
   const map = useMap();
   useEffect(() => {
     map.flyTo(center, zoom, { duration: 0.5 });
+    const timer = setTimeout(() => {
+      map.flyTo(center, zoom - 5, { duration: 0.5 });
+    }, 2000);
   }, [center, zoom, map]);
+
   return null;
 }
 
@@ -42,7 +46,7 @@ function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <ChangeView center={[latitude, longitude]} zoom={3} />
+      <ChangeView center={[latitude, longitude]} zoom={10} />
       <Marker
         ref={markerRef}
         position={[latitude, longitude]}
@@ -53,8 +57,7 @@ function Map() {
             <Heading as={"h2"}> {locationLocale} </Heading>
             <Image src={cloudyDay} alt="Cloudy Day" boxSize="40px" />
             <Heading as={"h5"} fontSize={"md"}>
-              {" "}
-              {countryName}{" "}
+              {countryName}
             </Heading>
           </Flex>
         </Popup>

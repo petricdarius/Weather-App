@@ -43,7 +43,7 @@ export const useWeather = create((set) => ({
       set({
         weatherData: data.weatherData,
         loading: false,
-        location: location,
+        location: `${location[0].toUpperCase()}${location.slice(1)}`,
         countryName: data.countryName,
       });
       return { success: true };
