@@ -39,6 +39,7 @@ export const useWeather = create((set) => ({
         body: JSON.stringify({ location }),
       });
       const data = await res.json();
+      console.log(data);
       set({
         weatherData: data.weatherData,
         loading: false,

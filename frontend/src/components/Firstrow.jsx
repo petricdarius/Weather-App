@@ -13,17 +13,22 @@ import RainImg from "../assets/weather_images/rain.png";
 import MapSvg from "../assets/map.svg?react";
 import { useWeather } from "../weather/weather.js";
 import { useMemo } from "react";
+import "leaflet/dist/leaflet.css";
+import Map from "./Map.jsx?react";
+import { useColorMode } from "../components/ui/color-mode";
 
 function Firstrow() {
   const { setCoords, postCoords, weatherData, loading, location, countryName } =
     useWeather();
-
+  let latitude, longitude;
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const lat = pos.coords.latitude;
           const lng = pos.coords.longitude;
+          latitude = lat;
+          longitude = lng;
           setCoords(lat, lng);
           await postCoords(lat, lng);
         },
@@ -87,7 +92,16 @@ function Firstrow() {
     if (!weatherData) return null;
     return weatherData.hourly;
   }, [weatherData]);
-  console.log(timeWeather);
+  const { colorMode } = useColorMode();
+
+  const bgGradient =
+    colorMode === "light"
+      ? "linear-gradient(135deg, #a2b0efff 0%, #764ba2 100%)"
+      : "linear-gradient(135deg, #8197a3ff 0%, #1c1c1c 100%)";
+  const bgGradient2 =
+    colorMode === "light"
+      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
   return (
     <Flex
       maxW="90%"
@@ -99,18 +113,22 @@ function Firstrow() {
     >
       <Box flex={{ base: "1", sm: "0 0 60%" }}>
         <SimpleGrid
-          py={20}
+          py={11}
           px={10}
           columns={{ base: 2, sm: 5 }}
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
           rows={{ base: 2, sm: 2 }}
           overflow={"scroll"}
           scrollbarWidth={"none"}
           gap="40px"
-          bgColor="blue.100"
+          bg={bgGradient}
           borderRadius="30px"
         >
-          <Image src={RainImg} alt="Rain" boxSize="64px"
-          display={{ base: "none", sm: "block" }}
+          <Image
+            src={RainImg}
+            alt="Rain"
+            boxSize="64px"
+            display={{ base: "none", sm: "block" }}
           />
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
@@ -126,7 +144,7 @@ function Firstrow() {
             <Heading as="h1" fontSize="35px" mb={2}>
               {curTemperature}°
             </Heading>
-            <Heading as="h2">Temperature</Heading>
+            <Heading as="h2">Temperatura</Heading>
           </Flex>
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px">
@@ -135,7 +153,7 @@ function Firstrow() {
                 %
               </Box>
             </Heading>
-            <Heading as="h2">Humidity</Heading>
+            <Heading as="h2">Umiditate</Heading>
           </Flex>
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px">
@@ -144,7 +162,7 @@ function Firstrow() {
                 km/h
               </Box>
             </Heading>
-            <Heading as="h2">Windspeed</Heading>
+            <Heading as="h2">Viteza Vantului</Heading>
           </Flex>
           <GridItem colSpan={{ base: 2, sm: 5 }}>
             <Flex
@@ -169,7 +187,7 @@ function Firstrow() {
                   key={idx}
                   flex="0 0 auto"
                   flexDir="column"
-                  bg="blue.300"
+                  bg={bgGradient2}
                   borderRadius="30px"
                   justify="center"
                   alignItems="center"
@@ -188,7 +206,7 @@ function Firstrow() {
                   </Heading>
                   <Image src={RainImg} alt="Rain" boxSize="64px" />
                   <Heading as="h1" fontSize="25px" lineHeight="1" m={0} mt={2}>
-                    {timeWeather.temperature_2m[idx]}°
+                    {timeWeather.temperature_2m[idx]}° C
                   </Heading>
                 </Flex>
               ))}
@@ -202,7 +220,16 @@ function Firstrow() {
         ms={{ base: 0, sm: 10 }}
         display={{ base: "none", sm: "block" }}
       >
-        <MapSvg width="50%" height="50%" />
+        <Box
+          w="100%"
+          h="400px"
+          p={5}
+          borderRadius="30px"
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+          bg={bgGradient}
+        >
+          <Map />
+        </Box>
       </Box>
     </Flex>
   );
