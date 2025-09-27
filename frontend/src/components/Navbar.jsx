@@ -48,15 +48,18 @@ const Navbar = () => {
             maxW={{ base: "100px", sm: "200px" }}
             placeholder="⌕ Oras sau cod postal"
             borderRadius="20px"
-            value={city.city} // 👈 valoarea controlată
+            value={city.city}
             onChange={(e) => input({ city: e.target.value })}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                postLocation(city.city); // trimite la server direct
-                input({ city: "" }); // resetează input-ul
+                postLocation(city.city); 
+                input({ city: "" }); 
                 console.log("Submitted city:", city.city);
               }
             }}
+            border={"1px solid"}
+            boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+            _placeholder={{ color: colorMode === "light" ? "black" : "white" }}
           />
 
           <Button
