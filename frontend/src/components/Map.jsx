@@ -13,7 +13,6 @@ function ChangeView({ center, zoom }) {
   const map = useMap();
   useEffect(() => {
     if (!center || isNaN(center[0]) || isNaN(center[1])) return;
-    console.log(center);
     map.flyTo(center, zoom, { duration: 0.5 });
     const timer = setTimeout(() => {
       map.flyTo([center[0], center[1]], zoom - 5, { duration: 0.5 });
@@ -36,7 +35,6 @@ function Map() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    console.log(window.innerWidth);
     function checkScreen() {
       setIsMobile(window.innerWidth < 481);
     }

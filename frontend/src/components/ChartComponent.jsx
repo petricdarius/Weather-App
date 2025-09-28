@@ -26,12 +26,10 @@ function ChartComponent() {
       "ro-RO",
       { weekday: "short" }
     );
-    const high = weatherData.daily.temperature_2m_max[index];
-    const low = weatherData.daily.temperature_2m_min[index];
+    const humidityVal = weatherData.daily.relative_humidity_2m_mean[index];
     data.push({
       day: `${day[0].toUpperCase() + day.slice(1)}`,
-      high,
-      low,
+      humidityVal: `${humidityVal}`,
     });
   });
   return (
@@ -51,7 +49,7 @@ function ChartComponent() {
       }}
       mt={10}
     >
-      <ResponsiveContainer width="100%" height={300} border="1px solid red">
+      <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid stroke={""} strokeDasharray="5 5" />
           <XAxis
@@ -62,30 +60,39 @@ function ChartComponent() {
           <YAxis
             tick={{ fill: "white", fontSize: 14 }}
             label={{
-              value: "°C",
-              position: "insideLeft",
-              angle: -90,
-              color: "red",
+              value: "",
+              position: "insideTopLeft",
+              angle: -190,
             }}
             tickMargin={10}
+            tickFormatter={(val) => `${val}%`}
           />
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: colorMode === "light" ? "#9d82b8ff " : "#4cbaffff",
+              borderRadius: "10px",
+              border: "2px solid #4cbaff",
+              padding: "10px",
+            }}
+            labelStyle={{
+              color: colorMode === "dark" ? "#fff" : "#000",
+              fontWeight: "bold",
+              fontSize: 14,
+            }} 
+            itemStyle={{
+              color: colorMode === "dark" ? "#fff" : "#000",
+              fontSize: 14,
+            }} 
+            formatter={(value, name) => [`${value}%`, name]}
+          />
+
           <Legend />
-
           <Line
             type="monotone"
-            dataKey="high"
-            stroke="#ff4c4c"
+            dataKey="humidityVal"
+            stroke="#4cbaffff"
             strokeWidth={3}
-            name="High"
-          />
-
-          <Line
-            type="monotone"
-            dataKey="low"
-            stroke="#4c9dff"
-            strokeWidth={3}
-            name="Low"
+            name="Humidity"
           />
         </LineChart>
       </ResponsiveContainer>

@@ -54,7 +54,6 @@ const Navbar = () => {
               if (e.key === "Enter") {
                 postLocation(city.city); 
                 input({ city: "" }); 
-                console.log("Submitted city:", city.city);
               }
             }}
             border={"1px solid"}

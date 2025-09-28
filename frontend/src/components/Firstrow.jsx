@@ -93,7 +93,6 @@ function Firstrow() {
     return weatherData.hourly;
   }, [weatherData]);
   const { colorMode } = useColorMode();
-
   const bgGradient =
     colorMode === "light"
       ? "linear-gradient(135deg, #a2b0efff 0%, #764ba2 100%)"
@@ -102,6 +101,27 @@ function Firstrow() {
     colorMode === "light"
       ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
       : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
+  let nowTime = weatherData?.current_weather.time.slice(11, 16);
+  nowTime = nowTime?.replace(`${nowTime[3]}${nowTime[4]}`, "00");
+  const startIndex = React.useMemo(() => {
+    if (!timeWeather) return 0;
+
+    const nowDate = new Date(weatherData.current_weather.time).getTime();
+    const hourlyTimes = timeWeather.time.map((t) => new Date(t).getTime());
+
+    let closestIdx = 0;
+    let minDiff = Infinity;
+
+    hourlyTimes.forEach((t, i) => {
+      const diff = Math.abs(t - nowDate);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIdx = i;
+      }
+    });
+
+    return closestIdx;
+  }, [timeWeather, weatherData]);
   return (
     <Flex
       maxW={{
@@ -183,34 +203,43 @@ function Firstrow() {
                 },
               }}
             >
-              {timeWeather?.time.map((t, idx) => (
-                <Flex
-                  key={idx}
-                  flex="0 0 auto"
-                  flexDir="column"
-                  bg={bgGradient2}
-                  borderRadius="30px"
-                  justify="center"
-                  alignItems="center"
-                  p={5}
-                  minW="120px"
-                >
-                  <Heading
-                    as="h1"
-                    fontSize="25px"
-                    lineHeight="1"
-                    fontWeight={"light"}
-                    m={0}
-                    mb={2}
-                  >
-                    {t.slice(11)} {t.slice(11, 13) < 12 ? "AM" : "PM"}
-                  </Heading>
-                  <Image src={RainImg} alt="Rain" boxSize="64px" />
-                  <Heading as="h1" fontSize="25px" lineHeight="1" m={0} mt={2}>
-                    {timeWeather.temperature_2m[idx]}° C
-                  </Heading>
-                </Flex>
-              ))}
+              {timeWeather?.time.slice(startIndex).map(
+                (t, idx) =>
+                  idx <= 23 && (
+                    <Flex
+                      key={idx}
+                      flex="0 0 auto"
+                      flexDir="column"
+                      bg={bgGradient2}
+                      borderRadius="30px"
+                      justify="center"
+                      alignItems="center"
+                      p={5}
+                      maxW="90px"
+                    >
+                      <Heading
+                        as="h1"
+                        fontSize="20px"
+                        lineHeight="1"
+                        fontWeight={"light"}
+                        m={0}
+                        mb={4}
+                      >
+                        {t.slice(11)} 
+                      </Heading>
+                      <Image src={RainImg} alt="Rain" boxSize="44px" />
+                      <Heading
+                        as="h1"
+                        fontSize="15px"
+                        lineHeight="1"
+                        m={0}
+                        mt={4}
+                      >
+                        {timeWeather.temperature_2m[startIndex + idx]}° C
+                      </Heading>
+                    </Flex>
+                  )
+              )}
             </Flex>
           </GridItem>
         </SimpleGrid>

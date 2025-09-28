@@ -16,11 +16,11 @@ function App() {
       : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
 
   return (
-    <Box bg={bgGradient} minH="100vh">
+    <Box bg={bgGradient} minH={{ base: "200vh", sm: "100vh" }}>
       <Navbar />
       <Box mt={10}>
         <Firstrow />
-        <ChartComponent  />
+        <ChartComponent />
       </Box>
     </Box>
   );
