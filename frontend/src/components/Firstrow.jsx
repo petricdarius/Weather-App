@@ -104,7 +104,10 @@ function Firstrow() {
       : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
   return (
     <Flex
-      maxW="90%"
+      maxW={{
+        base: "80%",
+        sm: "90%",
+      }}
       mx="auto"
       alignItems="center"
       justifyContent="space-between"
@@ -132,9 +135,7 @@ function Firstrow() {
           />
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
-              {weatherData
-                ? location
-                : "Loading..."}
+              {weatherData ? location : "Loading..."}
             </Heading>
             <Heading as="h2" ms={"-5"}>
               {countryName}
@@ -218,15 +219,16 @@ function Firstrow() {
       <Box
         flex={{ base: "1", sm: "0 0 40%" }}
         ms={{ base: 0, sm: 10 }}
-        display={{ base: "none", sm: "block" }}
+        display={{ base: "block", sm: "block" }}
+        w="100%"
       >
         <Box
-          w="100%"
           h="400px"
           p={5}
           borderRadius="30px"
           boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
           bg={bgGradient}
+          display={{ base: "block", sm: "block" }}
         >
           <Map />
         </Box>

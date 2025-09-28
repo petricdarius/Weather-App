@@ -7,6 +7,7 @@ import {
   YAxis,
   Legend,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { Box } from "@chakra-ui/react";
 import { useColorMode } from "../components/ui/color-mode";
@@ -22,54 +23,72 @@ function ChartComponent() {
   const data = [];
   weatherData?.daily.time.forEach((days, index) => {
     const day = new Date(weatherData.daily.time[index]).toLocaleDateString(
-      "en-US",
+      "ro-RO",
       { weekday: "short" }
     );
     const high = weatherData.daily.temperature_2m_max[index];
     const low = weatherData.daily.temperature_2m_min[index];
-    data.push({ day, high, low });
+    data.push({
+      day: `${day[0].toUpperCase() + day.slice(1)}`,
+      high,
+      low,
+    });
   });
   return (
     <Box
       p={5}
+      ps={0}
       bg={bgGradient}
       borderRadius="30px"
       boxShadow="md"
-      w={"fit-content"}
-      ms={"5%"}
+      w={{
+        base: "80%",
+        sm: "54%",
+      }}
+      ms={{
+        base: "10%",
+        sm: "5%",
+      }}
       mt={10}
     >
-      <LineChart width={600} height={300} data={data}>
-        <CartesianGrid stroke={""} strokeDasharray="5 5" />
-        <XAxis dataKey="day" tick={{ fill: "white", fontSize: 14 }} />
-        <YAxis
-          tick={{ fill: "white", fontSize: 14 }}
-          label={{
-            value: "°C",
-            position: "insideLeft",
-            angle: -90,
-            color: "red",
-          }}
-        />
-        <Tooltip />
-        <Legend />
+      <ResponsiveContainer width="100%" height={300} border="1px solid red">
+        <LineChart data={data}>
+          <CartesianGrid stroke={""} strokeDasharray="5 5" />
+          <XAxis
+            dataKey="day"
+            tick={{ fill: "white", fontSize: 14 }}
+            tickMargin={10}
+          />
+          <YAxis
+            tick={{ fill: "white", fontSize: 14 }}
+            label={{
+              value: "°C",
+              position: "insideLeft",
+              angle: -90,
+              color: "red",
+            }}
+            tickMargin={10}
+          />
+          <Tooltip />
+          <Legend />
 
-        <Line
-          type="monotone"
-          dataKey="high"
-          stroke="#ff4c4c"
-          strokeWidth={3}
-          name="High"
-        />
+          <Line
+            type="monotone"
+            dataKey="high"
+            stroke="#ff4c4c"
+            strokeWidth={3}
+            name="High"
+          />
 
-        <Line
-          type="monotone"
-          dataKey="low"
-          stroke="#4c9dff"
-          strokeWidth={3}
-          name="Low"
-        />
-      </LineChart>
+          <Line
+            type="monotone"
+            dataKey="low"
+            stroke="#4c9dff"
+            strokeWidth={3}
+            name="Low"
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </Box>
   );
 }

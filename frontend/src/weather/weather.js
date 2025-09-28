@@ -12,7 +12,7 @@ export const useWeather = create((set) => ({
   postCoords: async (latitude, longitude) => {
     set({ loading: true, error: null });
     try {
-      const res = await fetch("http://localhost:5000/weather", {
+      const res = await fetch("/api/weather", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ latitude, longitude }),
@@ -33,7 +33,7 @@ export const useWeather = create((set) => ({
   },
   postLocation: async (location) => {
     try {
-      const res = await fetch("http://localhost:5000/location", {
+      const res = await fetch("/api/location", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ location }),

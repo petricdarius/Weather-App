@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import Firstrow from "./components/Firstrow";
 import { useColorMode } from "./components/ui/color-mode";
 import ChartComponent from "./components/ChartComponent";
-
+import "./assets/css/style.css";
 function App() {
   const { colorMode } = useColorMode();
 
@@ -20,7 +20,7 @@ function App() {
       <Navbar />
       <Box mt={10}>
         <Firstrow />
-        <ChartComponent />
+        <ChartComponent  />
       </Box>
     </Box>
   );
