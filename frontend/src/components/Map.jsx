@@ -8,19 +8,60 @@ import L from "leaflet";
 import { useColorMode } from "../components/ui/color-mode";
 import MapPopupStyles from "../assets/css/MapPopup.jsx";
 
-function ChangeView({ center, zoom }) {
-  if (!center || center.some(isNaN)) return;
+function MapContent({ mapCenter, zoom, colorMode, locationLocale, countryName, markerRef, invisibleIcon, cloudyDay }) {
   const map = useMap();
+
   useEffect(() => {
-    if (!center || isNaN(center[0]) || isNaN(center[1])) return;
-    map.flyTo(center, zoom, { duration: 0.5 });
+    if (!mapCenter || mapCenter.some(isNaN)) return;
+    map.flyTo(mapCenter, zoom, { duration: 0.5 });
+    
     const timer = setTimeout(() => {
-      map.flyTo([center[0], center[1]], zoom - 5, { duration: 0.5 });
+      map.flyTo([mapCenter[0], mapCenter[1]], zoom - 5, { duration: 0.5 });
     }, 2000);
+    
     return () => clearTimeout(timer);
-  }, [center, zoom, map]);
-  return null;
+  }, [mapCenter, zoom, map]);
+
+  useEffect(() => {
+    const resizeTimer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100); 
+
+    return () => clearTimeout(resizeTimer);
+  }, [map]);
+
+  useEffect(() => {
+    if (markerRef.current) markerRef.current.openPopup();
+  }, [mapCenter, markerRef]);
+
+  const popupBg = colorMode === "light" ? "#a2b0ef" : "#163c50";
+  const popupColor = colorMode === "light" ? "#1c1c1c" : "#f7fafc";
+
+  return (
+    <>
+      <MapPopupStyles />
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker ref={markerRef} position={mapCenter} icon={invisibleIcon}>
+        <Popup 
+          style={{ 
+            backgroundColor: popupBg, 
+            color: popupColor 
+          }}
+        >
+          <Flex flexDir="column" alignItems="center">
+            <Heading as="h2">{locationLocale}</Heading>
+            <Image src={cloudyDay} alt="Cloudy Day" boxSize="40px" />
+            <Heading as="h5" fontSize="md">{countryName}</Heading>
+          </Flex>
+        </Popup>
+      </Marker>
+    </>
+  );
 }
+
 function Map() {
   const markerRef = useRef(null);
   const { coords, location, weatherData, countryName } = useWeather();
@@ -43,10 +84,6 @@ function Map() {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
-  useEffect(() => {
-    if (markerRef.current) markerRef.current.openPopup();
-  }, [mapCenter]);
-
   const invisibleIcon = L.icon({
     iconUrl: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
     iconSize: [0, 0],
@@ -61,32 +98,18 @@ function Map() {
       scrollWheelZoom={false}
       style={{ width: "100%", height: "100%" }}
     >
-      <MapPopupStyles />
-
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      <MapContent
+        mapCenter={mapCenter}
+        zoom={10} 
+        colorMode={colorMode}
+        locationLocale={locationLocale}
+        countryName={countryName}
+        markerRef={markerRef}
+        invisibleIcon={invisibleIcon}
+        cloudyDay={cloudyDay}
       />
-      {<ChangeView center={mapCenter} zoom={10} />}
-      <Marker ref={markerRef} position={mapCenter} icon={invisibleIcon}>
-        <Popup
-          style={{
-            backgroundColor: colorMode === "light" ? "#a2b0ef" : "#163c50",
-            color: colorMode === "light" ? "#1c1c1c" : "#f7fafc",
-          }}
-        >
-          <Flex flexDir="column" alignItems="center">
-            <Heading as="h2">{locationLocale}</Heading>
-            <Image src={cloudyDay} alt="Cloudy Day" boxSize="40px" />
-            <Heading as="h5" fontSize="md">
-              {countryName}
-            </Heading>
-          </Flex>
-        </Popup>
-      </Marker>
     </MapContainer>
   );
 }
 
 export default Map;
-// AIzaSyBTPPWCmap246m36M1BDYHfb5qLUPa4LFo

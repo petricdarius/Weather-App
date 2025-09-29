@@ -6,7 +6,7 @@ export default function MapPopupStyles() {
   useEffect(() => {
     const root = document.documentElement;
     if (colorMode === "light") {
-      root.style.setProperty("--popup-bg", "#a2b0ef");
+      root.style.setProperty("--popup-bg", "#bfc6e6ff");
       root.style.setProperty("--popup-color", "#1c1c1c");
     } else {
       root.style.setProperty("--popup-bg", "#163c50");

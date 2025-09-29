@@ -16,6 +16,7 @@ import { useMemo } from "react";
 import "leaflet/dist/leaflet.css";
 import Map from "./Map.jsx?react";
 import { useColorMode } from "../components/ui/color-mode";
+import "../assets/css/style.css";
 
 function Firstrow() {
   const { setCoords, postCoords, weatherData, loading, location, countryName } =
@@ -95,12 +96,13 @@ function Firstrow() {
   const { colorMode } = useColorMode();
   const bgGradient =
     colorMode === "light"
-      ? "linear-gradient(135deg, #a2b0efff 0%, #764ba2 100%)"
-      : "linear-gradient(135deg, #8197a3ff 0%, #1c1c1c 100%)";
+      ? "linear-gradient(135deg, #d6e9ff 0%, #f1f5f9 100%)"
+      : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
+
   const bgGradient2 =
     colorMode === "light"
-      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-      : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
+      ? "linear-gradient(135deg, #a2b0efff 0%, #d6e9ffff 100%)" 
+      : "linear-gradient(135deg, #1c3a50ff 0%, #163c50ff 100%)";
   let nowTime = weatherData?.current_weather.time.slice(11, 16);
   nowTime = nowTime?.replace(`${nowTime[3]}${nowTime[4]}`, "00");
   const startIndex = React.useMemo(() => {
@@ -129,13 +131,14 @@ function Firstrow() {
         sm: "90%",
       }}
       mx="auto"
-      alignItems="center"
+      alignItems="stretch"
       justifyContent="space-between"
       flexDir={{ base: "column", sm: "row" }}
-      gap={{ base: 10, sm: 8 }}
+      gap={{ base: 10, sm: "5%" }}
     >
       <Box flex={{ base: "1", sm: "0 0 60%" }}>
         <SimpleGrid
+          border="1px solid rgba(0,0,0,0.08)"
           py={11}
           px={10}
           columns={{ base: 2, sm: 5 }}
@@ -146,6 +149,7 @@ function Firstrow() {
           gap="40px"
           bg={bgGradient}
           borderRadius="30px"
+          h="100%"
         >
           <Image
             src={RainImg}
@@ -164,6 +168,9 @@ function Firstrow() {
           <Flex flexDir="column">
             <Heading as="h1" fontSize="35px" mb={2}>
               {curTemperature}°
+              <Box as="span" fontSize="14px" verticalAlign="baseline">
+                C
+              </Box>
             </Heading>
             <Heading as="h2">Temperatura</Heading>
           </Flex>
@@ -225,7 +232,7 @@ function Firstrow() {
                         m={0}
                         mb={4}
                       >
-                        {t.slice(11)} 
+                        {t.slice(11)}
                       </Heading>
                       <Image src={RainImg} alt="Rain" boxSize="44px" />
                       <Heading
@@ -245,19 +252,14 @@ function Firstrow() {
         </SimpleGrid>
       </Box>
 
-      <Box
-        flex={{ base: "1", sm: "0 0 40%" }}
-        ms={{ base: 0, sm: 10 }}
-        display={{ base: "block", sm: "block" }}
-        w="100%"
-      >
+      <Box flex={{ base: "1", sm: "0 0 %" }}>
         <Box
-          h="400px"
+          border="1px solid rgba(0,0,0,0.08)"
+          h={{ base: "400px", sm: "400px" }}
           p={5}
           borderRadius="30px"
           boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
           bg={bgGradient}
-          display={{ base: "block", sm: "block" }}
         >
           <Map />
         </Box>

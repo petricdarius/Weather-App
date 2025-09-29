@@ -12,3 +12,14 @@
 .leaflet-popup-close-button span {
     display: none;
 }
+
+.scrollable-element {
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollable-element::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari */
+}
