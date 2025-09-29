@@ -1,12 +1,10 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Firstrow from "./components/Firstrow";
 import { useColorMode } from "./components/ui/color-mode";
 import ChartComponent from "./components/ChartComponent";
 import "./assets/css/style.css";
+import NavigateCities from "./components/NavigateCities";
 function App() {
   const { colorMode } = useColorMode();
 
@@ -26,9 +24,19 @@ function App() {
       overflowY="auto"
     >
       <Navbar />
-      <Box mt={10}>
-        <Firstrow />
+      <Box
+        mt={{
+          base: "10",
+          sm: "0",
+        }}
+      >
+        <Flex
+        flexDir={"column"}
+        >
+          <Firstrow />
         <ChartComponent />
+        <NavigateCities />
+        </Flex>
       </Box>
     </Box>
   );

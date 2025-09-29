@@ -6,16 +6,24 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useColorMode } from "../components/ui/color-mode";
 import { LuMoon, LuSun } from "react-icons/lu";
-import { Switch } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useWeather } from "../weather/weather.js";
+import { useLocalCities } from "../weather/fetchLocalCities.js";
 
 const Navbar = () => {
+  const {
+    currentCity,
+    cities,
+    inputCity,
+    setInputCity,
+    handleAddCity,
+    handleNext,
+    handlePrev,
+  } = useLocalCities();
+
   const { colorMode, toggleColorMode } = useColorMode();
-  const { location, postLocation, weatherData } = useWeather();
   const now = new Date();
   const options = {
     weekday: "long",
@@ -23,12 +31,9 @@ const Navbar = () => {
     month: "long",
     year: "numeric",
   };
-  const [unit, setUnit] = useState("C");
-  const [city, input] = useState({
-    city: "",
-  });
   const locale = "ro-RO";
   const formattedDate = new Intl.DateTimeFormat(locale, options).format(now);
+
   return (
     <Container maxW={"90%"} px={4}>
       <Flex
@@ -48,19 +53,15 @@ const Navbar = () => {
             maxW={{ base: "100px", sm: "200px" }}
             placeholder="⌕ Oras sau cod postal"
             borderRadius="20px"
-            value={city.city}
-            onChange={(e) => input({ city: e.target.value })}
+            value={inputCity}
+            onChange={(e) => setInputCity(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                postLocation(city.city); 
-                input({ city: "" }); 
-              }
+              if (e.key === "Enter") handleAddCity();
             }}
             border={"1px solid"}
             boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
             _placeholder={{ color: colorMode === "light" ? "black" : "white" }}
           />
-
           <Button
             colorScheme={colorMode === "light" ? "purple" : "yellow"}
             variant="outline"
@@ -70,44 +71,8 @@ const Navbar = () => {
           >
             {colorMode === "light" ? <LuMoon /> : <LuSun />}
           </Button>
-          <Flex
-            align="center"
-            borderRadius="full"
-            overflow="hidden"
-            border="1px solid"
-            borderColor={colorMode === "light" ? "purple.500" : "yellow.400"}
-          >
-            <Button
-              flex="1"
-              bg={
-                unit === "C"
-                  ? colorMode === "light"
-                    ? "purple.500"
-                    : "yellow.400"
-                  : "transparent"
-              }
-              color={unit === "C" ? "white" : "inherit"}
-              borderRadius={0}
-              onClick={() => setUnit("C")}
-            >
-              °C
-            </Button>
-            <Button
-              flex="1"
-              bg={
-                unit === "F"
-                  ? colorMode === "light"
-                    ? "purple.500"
-                    : "yellow.400"
-                  : "transparent"
-              }
-              color={unit === "F" ? "white" : "inherit"}
-              borderRadius={0}
-              onClick={() => setUnit("F")}
-            >
-              °F
-            </Button>
-          </Flex>
+
+          
         </HStack>
       </Flex>
     </Container>

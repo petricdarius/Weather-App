@@ -7,7 +7,13 @@ import { Flex, Heading, Image } from "@chakra-ui/react";
 import L from "leaflet";
 import { useColorMode } from "../components/ui/color-mode";
 import MapPopupStyles from "../assets/css/MapPopup.jsx";
-
+function FixMap() {
+  const map = useMap();
+  React.useEffect(() => {
+    map.invalidateSize(); // recalculare dimensiune și recentrare
+  }, [map]);
+  return null;
+}
 function MapContent({ mapCenter, zoom, colorMode, locationLocale, countryName, markerRef, invisibleIcon, cloudyDay }) {
   const map = useMap();
 
@@ -98,6 +104,7 @@ function Map() {
       scrollWheelZoom={false}
       style={{ width: "100%", height: "100%" }}
     >
+      <FixMap />
       <MapContent
         mapCenter={mapCenter}
         zoom={10} 

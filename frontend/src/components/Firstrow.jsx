@@ -17,7 +17,7 @@ import "leaflet/dist/leaflet.css";
 import Map from "./Map.jsx?react";
 import { useColorMode } from "../components/ui/color-mode";
 import "../assets/css/style.css";
-
+import { useColours } from "../assets/css/Colours.jsx";
 function Firstrow() {
   const { setCoords, postCoords, weatherData, loading, location, countryName } =
     useWeather();
@@ -94,15 +94,7 @@ function Firstrow() {
     return weatherData.hourly;
   }, [weatherData]);
   const { colorMode } = useColorMode();
-  const bgGradient =
-    colorMode === "light"
-      ? "linear-gradient(135deg, #d6e9ff 0%, #f1f5f9 100%)"
-      : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
-
-  const bgGradient2 =
-    colorMode === "light"
-      ? "linear-gradient(135deg, #a2b0efff 0%, #d6e9ffff 100%)" 
-      : "linear-gradient(135deg, #1c3a50ff 0%, #163c50ff 100%)";
+  const { bgGradient, bgGradient2 } = useColours();
   let nowTime = weatherData?.current_weather.time.slice(11, 16);
   nowTime = nowTime?.replace(`${nowTime[3]}${nowTime[4]}`, "00");
   const startIndex = React.useMemo(() => {

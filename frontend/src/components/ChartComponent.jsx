@@ -12,18 +12,11 @@ import {
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useColorMode } from "../components/ui/color-mode";
 import { useWeather } from "../weather/weather.js";
-
+import { useColours } from "../assets/css/Colours.jsx";
 function ChartComponent() {
   const { colorMode } = useColorMode();
   const { weatherData } = useWeather();
-  const bgGradient =
-    colorMode === "light"
-      ? "linear-gradient(135deg, #d6e9ff 0%, #f1f5f9 100%)"
-      : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
-  const bgGradient2 =
-    colorMode === "light"
-      ? "linear-gradient(135deg, #a2b0efff 0%, #d6e9ffff 100%)"
-      : "linear-gradient(135deg, #1c3a50ff 0%, #163c50ff 100%)";
+  const {bgGradient, bgGradient2} = useColours()
   const bgGradient3 =
     colorMode === "light"
       ? "linear-gradient(135deg, #b9c3f0ff 0%, #d6e9ffff 100%)"
