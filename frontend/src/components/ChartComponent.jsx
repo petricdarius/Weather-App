@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
@@ -12,6 +12,7 @@ import {
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useColorMode } from "../components/ui/color-mode";
 import { useWeather } from "../weather/weather.js";
+
 function ChartComponent() {
   const { colorMode } = useColorMode();
   const { weatherData } = useWeather();
@@ -23,6 +24,10 @@ function ChartComponent() {
     colorMode === "light"
       ? "linear-gradient(135deg, #a2b0efff 0%, #d6e9ffff 100%)"
       : "linear-gradient(135deg, #1c3a50ff 0%, #163c50ff 100%)";
+  const bgGradient3 =
+    colorMode === "light"
+      ? "linear-gradient(135deg, #b9c3f0ff 0%, #d6e9ffff 100%)"
+      : "linear-gradient(135deg, #273f50ff 0%, #203e4fff 100%)";
   const data = [];
   weatherData?.daily.time.forEach((days, index) => {
     const day = new Date(weatherData.daily.time[index]).toLocaleDateString(
@@ -30,15 +35,44 @@ function ChartComponent() {
       { weekday: "short" }
     );
     const humidityVal = weatherData.daily.relative_humidity_2m_mean[index];
+    const dayLight = parseInt(
+      parseInt(weatherData.daily.daylight_duration[index]) / 60 / 60
+    );
+    const uvIndex = weatherData.daily.uv_index_max[index];
     data.push({
       day: `${day[0].toUpperCase() + day.slice(1)}`,
       humidityVal: `${humidityVal}`,
+      dayLight,
+      uvIndex,
     });
   });
+  const [option, setOption] = useState("humidityVal");
+  let lineColour;
+  switch (option) {
+    case "dayLight":
+      lineColour = "#effa5aff";
+      break;
+    case "uvIndex":
+      lineColour = "#6f5afaff";
+      break;
+    default:
+      lineColour = "#5abdfaff";
+      break;
+  }
+  const optionLabels = {
+    humidityVal: "Humidity",
+    dayLight: "Daylight Time",
+    uvIndex: "UV Index",
+  };
+  const formatValue = (val, key) => {
+    if (key === "humidityVal") return `${val}%`;
+    if (key === "dayLight") return `${val} h`;
+    if (key === "uvIndex") return `${val}`;
+    return val;
+  };
   return (
     <Box
       p={5}
-      ps={0}
       bg={bgGradient}
       borderRadius="30px"
       boxShadow="md"
@@ -56,29 +90,35 @@ function ChartComponent() {
       <Flex justify="flex-end" gap={2} mb={4}>
         <Button
           borderRadius="10px"
-          bg={bgGradient2}
+          bg={option === "humidityVal" ? bgGradient3 : bgGradient2}
           color={colorMode === "light" ? "black" : "white"}
           size="sm"
+          onClick={() => setOption("humidityVal")}
         >
           Humidity
         </Button>
+
         <Button
           borderRadius="10px"
-          bg={bgGradient2}
+          bg={option === "dayLight" ? bgGradient3 : bgGradient2}
           color={colorMode === "light" ? "black" : "white"}
           size="sm"
+          onClick={() => setOption("dayLight")}
         >
-          Pressure
+          Daylight Time
         </Button>
+
         <Button
           borderRadius="10px"
-          bg={bgGradient2}
+          bg={option === "uvIndex" ? bgGradient3 : bgGradient2}
           color={colorMode === "light" ? "black" : "white"}
           size="sm"
+          onClick={() => setOption("uvIndex")}
         >
-          Rain
+          UV Index
         </Button>
       </Flex>
+
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <CartesianGrid stroke={""} strokeDasharray="5 5" />
@@ -101,7 +141,7 @@ function ChartComponent() {
               angle: -190,
             }}
             tickMargin={10}
-            tickFormatter={(val) => `${val}%`}
+            tickFormatter={(val) => formatValue(val, option)}
           />
           <Tooltip
             contentStyle={{
@@ -119,16 +159,16 @@ function ChartComponent() {
               color: colorMode === "dark" ? "#fff" : "#000",
               fontSize: 14,
             }}
-            formatter={(value, name) => [`${value}%`, name]}
+            formatter={(value) => [formatValue(value, option), optionLabels[option]]}
           />
 
           <Legend />
           <Line
             type="monotone"
-            dataKey="humidityVal"
-            stroke="#4cbaffff"
+            dataKey={option}
+            stroke={lineColour}
             strokeWidth={3}
-            name="Humidity"
+            name={optionLabels[option]}
           />
         </LineChart>
       </ResponsiveContainer>
