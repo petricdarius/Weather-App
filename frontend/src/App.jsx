@@ -5,8 +5,11 @@ import { useColorMode } from "./components/ui/color-mode";
 import ChartComponent from "./components/ChartComponent";
 import "./assets/css/style.css";
 import NavigateCities from "./components/NavigateCities";
+import { useLocalCities } from "./weather/fetchLocalCities.js";
+
 function App() {
   const { colorMode } = useColorMode();
+  const localCities = useLocalCities(); // Hook-ul aici, la nivel de App
 
   const bgGradient =
     colorMode === "light"
@@ -23,19 +26,17 @@ function App() {
       }}
       overflowY="auto"
     >
-      <Navbar />
+      <Navbar localCities={localCities} />
       <Box
         mt={{
           base: "10",
           sm: "0",
         }}
       >
-        <Flex
-        flexDir={"column"}
-        >
+        <Flex flexDir={"column"}>
           <Firstrow />
-        <ChartComponent />
-        <NavigateCities />
+          <ChartComponent />
+          <NavigateCities localCities={localCities} />
         </Flex>
       </Box>
     </Box>

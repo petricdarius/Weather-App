@@ -6,22 +6,13 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useColorMode } from "../components/ui/color-mode";
 import { LuMoon, LuSun } from "react-icons/lu";
-import { useWeather } from "../weather/weather.js";
-import { useLocalCities } from "../weather/fetchLocalCities.js";
 
-const Navbar = () => {
-  const {
-    currentCity,
-    cities,
-    inputCity,
-    setInputCity,
-    handleAddCity,
-    handleNext,
-    handlePrev,
-  } = useLocalCities();
+const Navbar = ({ localCities }) => {
+  const { currentCity, cities, inputCity, setInputCity, handleAddCity } =
+    localCities;
 
   const { colorMode, toggleColorMode } = useColorMode();
   const now = new Date();
@@ -58,10 +49,11 @@ const Navbar = () => {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleAddCity();
             }}
-            border={"1px solid"}
+            border="1px solid"
             boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
             _placeholder={{ color: colorMode === "light" ? "black" : "white" }}
           />
+
           <Button
             colorScheme={colorMode === "light" ? "purple" : "yellow"}
             variant="outline"
@@ -71,8 +63,6 @@ const Navbar = () => {
           >
             {colorMode === "light" ? <LuMoon /> : <LuSun />}
           </Button>
-
-          
         </HStack>
       </Flex>
     </Container>

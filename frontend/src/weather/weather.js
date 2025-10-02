@@ -7,6 +7,7 @@ export const useWeather = create((set) => ({
   error: null,
   location: null,
   countryName: null,
+  initialLocation: null,
   setCoords: (latitude, longitude) => set({ coords: { latitude, longitude } }),
 
   postCoords: async (latitude, longitude) => {
@@ -22,6 +23,7 @@ export const useWeather = create((set) => ({
         weatherData: data.weatherData,
         loading: false,
         location: data.cityName,
+        initialLocation: data.cityName,
         countryName: data.countryName,
       });
 
@@ -39,12 +41,13 @@ export const useWeather = create((set) => ({
         body: JSON.stringify({ location }),
       });
       const data = await res.json();
-      set({
+      set((state) => ({
         weatherData: data.weatherData,
         loading: false,
         location: `${location[0].toUpperCase()}${location.slice(1)}`,
         countryName: data.countryName,
-      });
+        initialLocation: state.initialLocation || state.location,
+      }));
       return { success: true };
     } catch (err) {
       set({ error: err.message, loading: false });
