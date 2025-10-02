@@ -127,37 +127,35 @@ function Firstrow() {
       justifyContent="space-between"
       flexDir={{ base: "column", sm: "row" }}
       gap={{ base: 10, sm: "5%" }}
+      mt={{
+        base: 5,
+        sm: 0,
+      }}
     >
       <Box flex={{ base: "1", sm: "0 0 60%" }}>
         <SimpleGrid
           border="1px solid rgba(0,0,0,0.08)"
           py={11}
           px={10}
-          columns={{ base: 2, sm: 5 }}
+          columns={{ base: 1, sm: 5 }}
           boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
-          rows={{ base: 2, sm: 2 }}
-          overflow={"scroll"}
-          scrollbarWidth={"none"}
           gap="40px"
           bg={bgGradient}
           borderRadius="30px"
           h="100%"
         >
-          <Image
-            src={RainImg}
-            alt="Rain"
-            boxSize="64px"
-            display={{ base: "none", sm: "block" }}
-          />
-          <Flex flexDir="column">
-            <Heading as="h1" fontSize="35px" mb={2} ms={"-5"}>
+          <Image src={RainImg} alt="Rain" boxSize={{
+            sm:"64px",
+            base:"100px"
+          }} display="block" className="grid_item"
+          /> 
+          <Flex flexDir="column" className="grid_item">
+            <Heading as="h1" fontSize="35px" mb={2}>
               {weatherData ? location : "Loading..."}
             </Heading>
-            <Heading as="h2" ms={"-5"}>
-              {countryName}
-            </Heading>
+            <Heading as="h2">{countryName}</Heading>
           </Flex>
-          <Flex flexDir="column">
+          <Flex flexDir="column"className="grid_item">
             <Heading as="h1" fontSize="35px" mb={2}>
               {curTemperature}°
               <Box as="span" fontSize="14px" verticalAlign="baseline">
@@ -166,7 +164,8 @@ function Firstrow() {
             </Heading>
             <Heading as="h2">Temperatura</Heading>
           </Flex>
-          <Flex flexDir="column">
+
+          <Flex flexDir="column"className="grid_item">
             <Heading as="h1" fontSize="35px">
               {humidity}
               <Box as="span" fontSize="14px" verticalAlign="baseline">
@@ -175,7 +174,8 @@ function Firstrow() {
             </Heading>
             <Heading as="h2">Umiditate</Heading>
           </Flex>
-          <Flex flexDir="column">
+
+          <Flex flexDir="column" className="grid_item">
             <Heading as="h1" fontSize="35px">
               {curWindSpeed}
               <Box as="span" fontSize="14px" verticalAlign="baseline">
@@ -184,22 +184,17 @@ function Firstrow() {
             </Heading>
             <Heading as="h2">Viteza Vantului</Heading>
           </Flex>
-          <GridItem colSpan={{ base: 2, sm: 5 }}>
+
+          <GridItem colSpan={{ base: 1, sm: 5 }}>
             <Flex
               overflowX="auto"
               gap={4}
               w="100%"
               py={2}
               css={{
-                "&::-webkit-scrollbar": {
-                  width: "4px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  width: "6px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  borderRadius: "24px",
-                },
+                "&::-webkit-scrollbar": { width: "4px" },
+                "&::-webkit-scrollbar-track": { width: "6px" },
+                "&::-webkit-scrollbar-thumb": { borderRadius: "24px" },
               }}
             >
               {timeWeather?.time.slice(startIndex).map(
@@ -214,7 +209,7 @@ function Firstrow() {
                       justify="center"
                       alignItems="center"
                       p={5}
-                      maxW="90px"
+                      minW="90px" // important, ca toate cardurile să fie vizibile în scroll
                     >
                       <Heading
                         as="h1"

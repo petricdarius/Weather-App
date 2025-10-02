@@ -34,27 +34,25 @@ const Navbar = ({ localCities }) => {
         justifyContent="space-between"
         flexDir={{ base: "column", sm: "row" }}
       >
-        <Heading as="h1">
-          {formattedDate[0].toUpperCase() + formattedDate.slice(1)}
-        </Heading>
-
-        <HStack spacing={2}>
-          <Input
-            name="city"
-            maxW={{ base: "100px", sm: "200px" }}
-            placeholder="⌕ Oras sau cod postal"
-            borderRadius="20px"
-            value={inputCity}
-            onChange={(e) => setInputCity(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleAddCity();
-            }}
-            border="1px solid"
-            boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
-            _placeholder={{ color: colorMode === "light" ? "black" : "white" }}
-          />
+        <Flex
+          w="100%"
+          alignItems="center"
+          h="auto"
+          justifyContent={{ base: "center", sm: "space-between" }}
+          flexDir={{ base: "column", sm: "row" }}
+          position="relative"
+          textAlign="center"
+          py={2}
+        >
+          <Heading as="h1" mt={2}>
+            {formattedDate[0].toUpperCase() + formattedDate.slice(1)}
+          </Heading>
 
           <Button
+            display={{ base: "block", sm: "none" }}
+            position="absolute"
+            right="-10%"
+            top="10px"
             colorScheme={colorMode === "light" ? "purple" : "yellow"}
             variant="outline"
             size="md"
@@ -63,7 +61,37 @@ const Navbar = ({ localCities }) => {
           >
             {colorMode === "light" ? <LuMoon /> : <LuSun />}
           </Button>
-        </HStack>
+
+          <HStack spacing={2} mt={{ base: 4, sm: 3 }}>
+            <Input
+              name="city"
+              maxW={{ base: "200px", sm: "200px" }}
+              placeholder="⌕   Oras sau cod postal"
+              borderRadius="20px"
+              value={inputCity}
+              onChange={(e) => setInputCity(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleAddCity();
+              }}
+              border="1px solid"
+              boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+              _placeholder={{
+                color: colorMode === "light" ? "black" : "white",
+              }}
+            />
+
+            <Button
+              colorScheme={colorMode === "light" ? "purple" : "yellow"}
+              variant="outline"
+              size="md"
+              borderRadius="full"
+              onClick={toggleColorMode}
+              display={{ base: "none", sm: "block" }}
+            >
+              {colorMode === "light" ? <LuMoon /> : <LuSun />}
+            </Button>
+          </HStack>
+        </Flex>
       </Flex>
     </Container>
   );

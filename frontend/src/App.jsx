@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Firstrow from "./components/Firstrow";
 import { useColorMode } from "./components/ui/color-mode";
@@ -9,7 +9,7 @@ import { useLocalCities } from "./weather/fetchLocalCities.js";
 
 function App() {
   const { colorMode } = useColorMode();
-  const localCities = useLocalCities(); // Hook-ul aici, la nivel de App
+  const localCities = useLocalCities();
 
   const bgGradient =
     colorMode === "light"

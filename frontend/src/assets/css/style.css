@@ -24,7 +24,11 @@
 }
 
 @media (max-width: 600px) {
-
+    .grid_item{
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+    }
     .scrollable-element {
         padding-left: 12px;
         padding-right: 12px;
@@ -53,7 +57,7 @@
     }
 
     .leaflet-container {
-        width: 100% !important;
+        width: 90% !important;
         max-width: 100% !important;
         height: 380px !important;
     }

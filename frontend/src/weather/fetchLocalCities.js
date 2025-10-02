@@ -60,8 +60,6 @@ export const useLocalCities = () => {
     const selectedCity = cities[index];
     setCurrentCity(selectedCity);
   }, [cities]);
-
-
   return {
     currentCity,
     cities,

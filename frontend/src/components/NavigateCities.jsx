@@ -22,8 +22,6 @@ function NavigateCities({ localCities }) {
       ? "linear-gradient(135deg, #d6e9ff 0%, #f1f5f9 100%)"
       : "linear-gradient(135deg, #163c50ff 0%, #1c1c1c 100%)";
 
-  console.log("NavigateCities - Cities:", cities);
-  console.log("NavigateCities - Current City:", currentCity);
 
   if (!cities || cities.length === 0) {
     return null;

@@ -48,7 +48,7 @@ function Map() {
       center={mapCenter}
       zoom={3}
       scrollWheelZoom={false}
-      style={{ width: "65vh", height: "100%" }}
+      style={{ width: "100%", height: "100%" }}
     >
       <MapPopupStyles />
 
