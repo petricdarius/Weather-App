@@ -8,6 +8,7 @@ export const useWeather = create((set) => ({
   location: null,
   countryName: null,
   initialLocation: null,
+  cities: null,
   setCoords: (latitude, longitude) => set({ coords: { latitude, longitude } }),
 
   postCoords: async (latitude, longitude) => {
@@ -50,6 +51,22 @@ export const useWeather = create((set) => ({
       }));
       return { success: true };
     } catch (err) {
+      set({ error: err.message, loading: false });
+      return { success: false };
+    }
+  },
+
+  searchlocation: async (location) => {
+    try {
+      const res = await fetch("api/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ location }),
+      });
+      const data = await res.json();
+      set({ cities: data, loading: false });
+      return { success: true };
+    } catch (error) {
       set({ error: err.message, loading: false });
       return { success: false };
     }
