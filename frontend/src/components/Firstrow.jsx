@@ -144,18 +144,23 @@ function Firstrow() {
           borderRadius="30px"
           h="100%"
         >
-          <Image src={RainImg} alt="Rain" boxSize={{
-            sm:"64px",
-            base:"100px"
-          }} display="block" className="grid_item"
-          /> 
+          <Image
+            src={RainImg}
+            alt="Rain"
+            boxSize={{
+              sm: "64px",
+              base: "100px",
+            }}
+            display="block"
+            className="grid_item"
+          />
           <Flex flexDir="column" className="grid_item">
             <Heading as="h1" fontSize="35px" mb={2}>
               {weatherData ? location : "Loading..."}
             </Heading>
             <Heading as="h2">{countryName}</Heading>
           </Flex>
-          <Flex flexDir="column"className="grid_item">
+          <Flex flexDir="column" className="grid_item">
             <Heading as="h1" fontSize="35px" mb={2}>
               {curTemperature}°
               <Box as="span" fontSize="14px" verticalAlign="baseline">
@@ -165,7 +170,7 @@ function Firstrow() {
             <Heading as="h2">Temperatura</Heading>
           </Flex>
 
-          <Flex flexDir="column"className="grid_item">
+          <Flex flexDir="column" className="grid_item">
             <Heading as="h1" fontSize="35px">
               {humidity}
               <Box as="span" fontSize="14px" verticalAlign="baseline">
@@ -239,7 +244,7 @@ function Firstrow() {
         </SimpleGrid>
       </Box>
 
-      <Box flex={{ base: "1", sm: "0 0 %" }}>
+      <Box flex={{ base: "1", sm: "0 0 %" }} zIndex={0}>
         <Box
           border="1px solid rgba(0,0,0,0.08)"
           h={{ base: "400px", sm: "400px" }}
