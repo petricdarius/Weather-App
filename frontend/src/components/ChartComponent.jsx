@@ -80,7 +80,7 @@ function ChartComponent() {
         boxShadow="md"
         border="1px solid rgba(0,0,0,0.08)"
         mt={10}
-        maxW={{ base: "88%", sm: "60%" }}
+        w={{ base: "88%", sm: "60%" }}
         mx="auto"
       >
         <Flex
@@ -104,6 +104,13 @@ function ChartComponent() {
             mt={{ base: 3, sm: 0 }}
             flexWrap={{ base: "nowrap", sm: "nowrap" }}
             w={{ base: "100%", sm: "fit-content" }}
+            flexDir={{
+              base: "column",
+              sm: "row",
+            }}
+            alignItems={{
+              base: "center",
+            }}
           >
             <Button
               borderRadius="10px"
@@ -111,10 +118,18 @@ function ChartComponent() {
               color={colorMode === "light" ? "black" : "white"}
               size={{ base: "sm", sm: "sm" }}
               onClick={() => setOption("humidityVal")}
+              w={{
+                sm: "40%",
+                base: "60%",
+              }}
             >
               Humidity
             </Button>
             <Button
+              w={{
+                sm: "40%",
+                base: "60%",
+              }}
               borderRadius="10px"
               bg={option === "dayLight" ? bgGradient3 : bgGradient2}
               color={colorMode === "light" ? "black" : "white"}
@@ -124,6 +139,10 @@ function ChartComponent() {
               Daylight Time
             </Button>
             <Button
+              w={{
+                sm: "40%",
+                base: "60%",
+              }}
               borderRadius="10px"
               bg={option === "uvIndex" ? bgGradient3 : bgGradient2}
               color={colorMode === "light" ? "black" : "white"}
@@ -135,62 +154,64 @@ function ChartComponent() {
           </Flex>
         </Flex>
 
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
-            <CartesianGrid stroke={""} strokeDasharray="5 5" />
-            <XAxis
-              dataKey="day"
-              tick={{
-                fill: colorMode === "dark" ? "white " : "black",
-                fontSize: 14,
-              }}
-              tickMargin={10}
-            />
-            <YAxis
-              tick={{
-                fill: colorMode === "dark" ? "white " : "black",
-                fontSize: 14,
-              }}
-              label={{
-                value: "",
-                position: "insideTopLeft",
-                angle: -190,
-              }}
-              tickMargin={10}
-              tickFormatter={(val) => formatValue(val, option)}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "transparent",
-                borderRadius: "10px",
-                border: "2px solid #4cbaff",
-                padding: "10px",
-              }}
-              labelStyle={{
-                color: colorMode === "dark" ? "#fff" : "#000",
-                fontWeight: "bold",
-                fontSize: 14,
-              }}
-              itemStyle={{
-                color: colorMode === "dark" ? "#fff" : "#000",
-                fontSize: 14,
-              }}
-              formatter={(value) => [
-                formatValue(value, option),
-                optionLabels[option],
-              ]}
-            />
+        <Box ms={"-5"}>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data}>
+              <CartesianGrid stroke={""} strokeDasharray="5 5" />
+              <XAxis
+                className="xaxis"
+                dataKey="day"
+                tick={{
+                  fill: colorMode === "dark" ? "white " : "black",
+                }}
+                interval={0}
+                tickMargin={10}
+              />
+              <YAxis
+                tick={{
+                  fill: colorMode === "dark" ? "white " : "black",
+                }}
+                label={{
+                  value: "",
+                  position: "insideTopLeft",
+                  angle: -190,
+                }}
+                tickMargin={10}
+                tickFormatter={(val) => formatValue(val, option)}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "transparent",
+                  borderRadius: "10px",
+                  border: "2px solid #4cbaff",
+                  padding: "10px",
+                }}
+                labelStyle={{
+                  color: colorMode === "dark" ? "#fff" : "#000",
+                  fontWeight: "bold",
+                  fontSize: 14,
+                }}
+                itemStyle={{
+                  color: colorMode === "dark" ? "#fff" : "#000",
+                  fontSize: 14,
+                }}
+                formatter={(value) => [
+                  formatValue(value, option),
+                  optionLabels[option],
+                ]}
+              />
 
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey={option}
-              stroke={lineColour}
-              strokeWidth={3}
-              name={optionLabels[option]}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey={option}
+                stroke={lineColour}
+                strokeWidth={3}
+                name={optionLabels[option]}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
       </Box>
       <Box
         flex={{ base: "1", sm: "0 0 35%" }}

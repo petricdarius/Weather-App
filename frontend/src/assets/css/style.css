@@ -72,7 +72,9 @@
     position: relative;
     z-index: 1;
 }
-
+.xaxis{
+    font-size: 20px;
+}
 .chakra-input[name="city"]+.chakra-stack {
     position: absolute;
     top: calc(100% + 6px);
@@ -88,5 +90,8 @@
     .chakra-input[name="city"]+.chakra-stack {
         width: 200px;
         left: 10;
+    }
+    .xaxis{
+        font-size: 12px;
     }
 }

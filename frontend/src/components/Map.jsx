@@ -14,10 +14,27 @@ function ChangeView({ center, zoom }) {
   useEffect(() => {
     if (!center || isNaN(center[0]) || isNaN(center[1])) return;
     map.flyTo(center, zoom, { duration: 0.5 });
-    const timer = setTimeout(() => {
+    const invalidateTimer = setTimeout(() => {
+      try {
+        map.invalidateSize();
+      } catch (e) {
+      }
+    }, 300);
+
+    const flyBackTimer = setTimeout(() => {
       map.flyTo([center[0], center[1]], zoom - 5, { duration: 0.5 });
+      setTimeout(() => {
+        try {
+          map.invalidateSize();
+        } catch (e) {
+        }
+      }, 350);
     }, 2000);
-    return () => clearTimeout(timer);
+
+    return () => {
+      clearTimeout(invalidateTimer);
+      clearTimeout(flyBackTimer);
+    };
   }, [center, zoom, map]);
   return null;
 }

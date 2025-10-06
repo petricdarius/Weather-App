@@ -19,24 +19,42 @@ import { useColorMode } from "../components/ui/color-mode";
 import "../assets/css/style.css";
 import { useColours } from "../assets/css/Colours.jsx";
 function Firstrow() {
-  const { setCoords, postCoords, weatherData, loading, location, countryName } =
-    useWeather();
+  const {
+    setCoords,
+    postCoords,
+    weatherData,
+    loading,
+    location,
+    countryName,
+    setDefaultCoords,
+  } = useWeather();
   let latitude, longitude;
   useEffect(() => {
+    let isMounted = true;
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
+          if (!isMounted) return;
           const lat = pos.coords.latitude;
           const lng = pos.coords.longitude;
-          latitude = lat;
-          longitude = lng;
           setCoords(lat, lng);
           await postCoords(lat, lng);
         },
-        (err) => console.error("Geolocation error:", err)
+        (err) => {
+          if (!isMounted) return;
+          setCoords(47.62, 23.612253);
+          postCoords(47.62, 23.612253);
+          console.error("Geolocation error:", err);
+        }
       );
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
   let humidity;
   humidity = React.useMemo(() => {
     if (!weatherData) return null;
@@ -244,7 +262,7 @@ function Firstrow() {
         </SimpleGrid>
       </Box>
 
-      <Box flex={{ base: "1", sm: "0 0 %" }} zIndex={0}>
+      <Box flex={{ base: "1", sm: "0 0 35%" }} w={{ base: "100%", sm: "35%" }} mx="auto" zIndex={0}>
         <Box
           border="1px solid rgba(0,0,0,0.08)"
           h={{ base: "400px", sm: "400px" }}

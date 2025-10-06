@@ -10,7 +10,9 @@ export const useWeather = create((set) => ({
   initialLocation: null,
   filteredCities: null,
   setCoords: (latitude, longitude) => set({ coords: { latitude, longitude } }),
-
+  setDefaultCoords : (latitude, longitude ) => {
+    if(!weatherData) set({coords: {latitude: 47.62, longitude: 23.612253}})
+  },
   postCoords: async (latitude, longitude) => {
     set({ loading: true, error: null });
     try {
