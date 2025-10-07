@@ -39,20 +39,20 @@ export const useLocalCities = () => {
     }
   }, [currentCity]);
 
-  const handleAddCity = useCallback(() => {
-    if (!inputCity.trim()) return;
-    
-    const newCity = inputCity.trim();
-    
-    setUserCities((prev) => {
-      const updated = [...new Set([...prev, newCity])];
-      localStorage.setItem("userCities", JSON.stringify(updated));
-      return updated;
-    });
-    
-    setCurrentCity(newCity);
-    setInputCity("");
-  }, [inputCity]);
+  const handleAddCity = useCallback((selectedCity) => {
+  const newCity = (selectedCity || inputCity).trim();
+  if (!newCity) return;
+
+  setUserCities((prev) => {
+    const updated = [...new Set([...prev, newCity])];
+    localStorage.setItem("userCities", JSON.stringify(updated));
+    return updated;
+  });
+
+  setCurrentCity(newCity);
+  setInputCity("");
+}, [inputCity]);
+
 
   const handleNav = useCallback((index) => {
     if (!cities.length || index >= cities.length) return;

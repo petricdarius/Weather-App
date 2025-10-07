@@ -18,7 +18,8 @@ import Map from "./Map.jsx?react";
 import { useColorMode } from "../components/ui/color-mode";
 import "../assets/css/style.css";
 import { useColours } from "../assets/css/Colours.jsx";
-function Firstrow() {
+import WeatherImage from "./WeatherImage.jsx";
+function Firstrow({ degree, setDegree }) {
   const {
     setCoords,
     postCoords,
@@ -162,16 +163,13 @@ function Firstrow() {
           borderRadius="30px"
           h="100%"
         >
-          <Image
-            src={RainImg}
-            alt="Rain"
-            boxSize={{
-              sm: "64px",
-              base: "100px",
-            }}
+          <Box
+            boxSize={{ sm: "114px", base: "100px" }}
             display="block"
             className="grid_item"
-          />
+          >
+            <WeatherImage />
+          </Box>
           <Flex flexDir="column" className="grid_item">
             <Heading as="h1" fontSize="35px" mb={2}>
               {weatherData ? location : "Loading..."}
@@ -179,10 +177,13 @@ function Firstrow() {
             <Heading as="h2">{countryName}</Heading>
           </Flex>
           <Flex flexDir="column" className="grid_item">
-            <Heading as="h1" fontSize="35px" mb={2}>
-              {curTemperature}°
+            <Heading as="h1" fontSize={degree === "F" ? "32px" : "35px"} mb={2}>
+              {degree === "F"
+                ? parseInt(curTemperature) * 1.8 + 32
+                : curTemperature}
+              °
               <Box as="span" fontSize="14px" verticalAlign="baseline">
-                C
+                {degree}
               </Box>
             </Heading>
             <Heading as="h2">Temperatura</Heading>
@@ -232,7 +233,7 @@ function Firstrow() {
                       justify="center"
                       alignItems="center"
                       p={5}
-                      minW="90px" // important, ca toate cardurile să fie vizibile în scroll
+                      minW="90px"
                     >
                       <Heading
                         as="h1"
@@ -244,7 +245,9 @@ function Firstrow() {
                       >
                         {t.slice(11)}
                       </Heading>
-                      <Image src={RainImg} alt="Rain" boxSize="44px" />
+                      <Box boxSize={"44px"}>
+                        <WeatherImage option="hourly" index={idx} />
+                      </Box>
                       <Heading
                         as="h1"
                         fontSize="15px"
@@ -252,7 +255,16 @@ function Firstrow() {
                         m={0}
                         mt={4}
                       >
-                        {timeWeather.temperature_2m[startIndex + idx]}° C
+                        {degree === "F"
+                          ? Math.round(
+                              parseInt(
+                                timeWeather.temperature_2m[startIndex + idx]
+                              ) *
+                                1.8 +
+                                32
+                            )
+                          : timeWeather.temperature_2m[startIndex + idx]}
+                        ° {degree}
                       </Heading>
                     </Flex>
                   )
@@ -262,7 +274,12 @@ function Firstrow() {
         </SimpleGrid>
       </Box>
 
-      <Box flex={{ base: "1", sm: "0 0 35%" }} w={{ base: "100%", sm: "35%" }} mx="auto" zIndex={0}>
+      <Box
+        flex={{ base: "1", sm: "0 0 35%" }}
+        w={{ base: "100%", sm: "35%" }}
+        mx="auto"
+        zIndex={0}
+      >
         <Box
           border="1px solid rgba(0,0,0,0.08)"
           h={{ base: "400px", sm: "400px" }}

@@ -6,11 +6,12 @@ import ChartComponent from "./components/ChartComponent";
 import "./assets/css/style.css";
 import NavigateCities from "./components/NavigateCities";
 import { useLocalCities } from "./weather/fetchLocalCities.js";
+import { useState } from "react";
 
 function App() {
   const { colorMode } = useColorMode();
   const localCities = useLocalCities();
-
+  const [degree, setDegree] = useState("C");
   const bgGradient =
     colorMode === "light"
       ? "linear-gradient(135deg, #d6e9ff 0%, #f1f5f9 100%)"
@@ -26,7 +27,7 @@ function App() {
       }}
       overflowY="auto"
     >
-      <Navbar localCities={localCities} />
+      <Navbar localCities={localCities} degree={degree} setDegree={setDegree} />
       <Box
         mt={{
           base: "10",
@@ -34,8 +35,8 @@ function App() {
         }}
       >
         <Flex flexDir={"column"}>
-          <Firstrow />
-          <ChartComponent />
+          <Firstrow degree={degree} setDegree={setDegree} />
+          <ChartComponent degree={degree} setDegree={setDegree} />
           <NavigateCities localCities={localCities} />
         </Flex>
       </Box>

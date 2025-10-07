@@ -3,10 +3,11 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useWeather } from "../weather/weather.js";
 import cloudyDay from "../assets/weather_images/cloudy-day.png";
-import { Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import L from "leaflet";
 import { useColorMode } from "../components/ui/color-mode";
 import MapPopupStyles from "../assets/css/MapPopup.jsx";
+import WeatherImage from "./WeatherImage.jsx";
 
 function ChangeView({ center, zoom }) {
   if (!center || center.some(isNaN)) return;
@@ -17,8 +18,7 @@ function ChangeView({ center, zoom }) {
     const invalidateTimer = setTimeout(() => {
       try {
         map.invalidateSize();
-      } catch (e) {
-      }
+      } catch (e) {}
     }, 300);
 
     const flyBackTimer = setTimeout(() => {
@@ -26,8 +26,7 @@ function ChangeView({ center, zoom }) {
       setTimeout(() => {
         try {
           map.invalidateSize();
-        } catch (e) {
-        }
+        } catch (e) {}
       }, 350);
     }, 2000);
 
@@ -66,7 +65,6 @@ function Map() {
       zoom={3}
       scrollWheelZoom={false}
       style={{ width: "100%", height: "100%" }}
-
     >
       <MapPopupStyles />
 
@@ -84,7 +82,9 @@ function Map() {
         >
           <Flex flexDir="column" alignItems="center">
             <Heading as="h2">{locationLocale}</Heading>
-            <Image src={cloudyDay} alt="Cloudy Day" boxSize="40px" />
+            <Box boxSize="40px">
+              <WeatherImage />
+            </Box>
             <Heading as="h5" fontSize="md">
               {countryName}
             </Heading>

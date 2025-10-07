@@ -95,3 +95,26 @@
         font-size: 12px;
     }
 }
+
+.fill-background {
+  position: relative;
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+.fill-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(135deg, #a2b0efff 0%, #d6e9ffff 100%);
+  animation: fill 0.2s forwards;
+}
+
+@keyframes fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}

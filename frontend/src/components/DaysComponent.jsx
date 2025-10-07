@@ -2,9 +2,9 @@ import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { useWeather } from "../weather/weather";
 import { useColours } from "../assets/css/Colours";
-import RainImg from "../assets/weather_images/rain.png";
+import WeatherImage from "./WeatherImage.jsx";
 
-function DaysComponent() {
+function DaysComponent({ degree, setDegree }) {
   const { bgGradient, bgGradient2 } = useColours();
   const { weatherData } = useWeather();
   let days;
@@ -39,8 +39,8 @@ function DaysComponent() {
           top="0"
           w={"fit"}
           p={{
-            base:0,
-            sm:3
+            base: 0,
+            sm: 3,
           }}
           h={"fit"}
           borderRadius={"20px"}
@@ -61,11 +61,11 @@ function DaysComponent() {
             });
             return (
               <Flex
-              key={index}
+                key={index}
                 flex={"row"}
                 w={{
-                  base:"100%",
-                  sm:"90%"
+                  base: "100%",
+                  sm: "90%",
                 }}
                 bg={bgGradient2}
                 ms={"auto"}
@@ -77,13 +77,14 @@ function DaysComponent() {
                 justifyContent={"space-between"}
               >
                 <Flex alignItems={"center"} flexDir={"row"}>
-                  <Image
-                    src={RainImg}
+                  <Box
                     boxSize={{
                       base: "34px",
                       sm: "74px",
                     }}
-                  />
+                  >
+                    <WeatherImage option="daily" index={index} />
+                  </Box>
                   <Heading
                     as="h1"
                     fontSize={{
@@ -95,11 +96,18 @@ function DaysComponent() {
                     display={"flex"}
                     alignItems={"baseline"}
                     flexDir={{
-                      base:"column",
-                      sm:"row"
+                      base: "column",
+                      sm: "row",
                     }}
                   >
-                    High {parseInt(daysData.temperature_2m_max[index])} °C
+                    High{" "}
+                    {degree === "F"
+                      ? Math.round(
+                          parseInt(daysData.temperature_2m_max[index]) * 1.8 +
+                            32
+                        )
+                      : parseInt(daysData.temperature_2m_max[index])}{" "}
+                    °{degree}
                     <Box
                       ms={2}
                       as="span"
@@ -109,7 +117,13 @@ function DaysComponent() {
                       }}
                       verticalAlign="baseline"
                     >
-                       Low {parseInt(daysData.temperature_2m_min[index])} °C
+                      Low {degree === "F"
+                      ? Math.round(
+                          parseInt(daysData.temperature_2m_min[index]) * 1.8 +
+                            32
+                        )
+                      : parseInt(daysData.temperature_2m_min[index])}{" "}
+                    °{degree}
                     </Box>
                   </Heading>
                 </Flex>

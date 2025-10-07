@@ -7,19 +7,20 @@ import {
   Input,
   Stack,
   DataList,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useColours } from "../assets/css/Colours";
 import { useColorMode } from "../components/ui/color-mode";
 import { LuMoon, LuSun } from "react-icons/lu";
 import { useWeather } from "../weather/weather";
 
-const Navbar = ({ localCities }) => {
+const Navbar = ({ localCities, degree, setDegree }) => {
   const { currentCity, cities, inputCity, setInputCity, handleAddCity } =
     localCities;
   const { searchlocation, filteredCities } = useWeather();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { bgGradient2 } = useColours();
+  const { bgGradient, bgGradient2 } = useColours();
   const now = new Date();
   const options = {
     weekday: "long",
@@ -29,7 +30,6 @@ const Navbar = ({ localCities }) => {
   };
   const locale = "ro-RO";
   const formattedDate = new Intl.DateTimeFormat(locale, options).format(now);
-
   return (
     <Container maxW={"90%"} px={4}>
       <Flex
@@ -49,9 +49,27 @@ const Navbar = ({ localCities }) => {
           textAlign="center"
           py={2}
         >
-          <Heading as="h1" mt={2}>
-            {formattedDate[0].toUpperCase() + formattedDate.slice(1)}
-          </Heading>
+          <HStack justifyContent="space-between" w={"60%"}>
+            <Heading as="h1" mt={2}>
+              {formattedDate[0].toUpperCase() + formattedDate.slice(1)}
+            </Heading>
+            <ButtonGroup mt={3} size="sm" variant="outline">
+              <Button
+                borderRadius={"12px"}
+                className={degree == "C" ? "fill-background" : ""}
+                onClick={() => setDegree("C")}
+              >
+                ° C
+              </Button>
+              <Button
+                borderRadius={"12px"}
+                className={degree == "F" ? "fill-background" : ""}
+                onClick={() => setDegree("F")}
+              >
+                ° F
+              </Button>
+            </ButtonGroup>
+          </HStack>
 
           <Button
             display={{ base: "block", sm: "none" }}
@@ -76,8 +94,8 @@ const Navbar = ({ localCities }) => {
                 borderRadius="20px"
                 value={inputCity}
                 onChange={(e) => {
-                  searchlocation(e.target.value);
                   setInputCity(e.target.value);
+                  searchlocation(e.target.value);
                 }}
                 border="1px solid"
                 boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
@@ -86,19 +104,15 @@ const Navbar = ({ localCities }) => {
                 }}
               />
               <Stack zIndex={10} gap="4" bg={bgGradient2} borderRadius={"20px"}>
-                <DataList.Root
-                  size="lg"
-                  zIndex={10}
-                  p={inputCity.length && 3}
-                >
+                <DataList.Root size="lg" zIndex={10} p={inputCity.length && 3}>
                   {inputCity.length > 0 &&
                     filteredCities?.map((city, index) => (
                       <DataList.Item key={index}>
                         <DataList.ItemValue
-                        cursor={"pointer"}
+                          cursor={"pointer"}
                           onClick={() => {
-                            setInputCity(city?.name);
-                            handleAddCity();
+                            setInputCity(city.name);
+                            handleAddCity(city.name);
                           }}
                         >
                           {city?.name}

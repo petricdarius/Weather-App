@@ -14,7 +14,7 @@ import { useColorMode } from "../components/ui/color-mode";
 import { useWeather } from "../weather/weather.js";
 import { useColours } from "../assets/css/Colours.jsx";
 import DaysComponent from "./DaysComponent.jsx";
-function ChartComponent() {
+function ChartComponent({ degree, setDegree }) {
   const { colorMode } = useColorMode();
   const { weatherData } = useWeather();
   const { bgGradient, bgGradient2 } = useColours();
@@ -234,7 +234,7 @@ function ChartComponent() {
           bg={bgGradient}
           mt={10}
         >
-          <DaysComponent />
+          <DaysComponent degree={degree} setDegree={setDegree} />
         </Box>
       </Box>
     </Flex>
