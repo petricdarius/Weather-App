@@ -49,11 +49,26 @@ const Navbar = ({ localCities, degree, setDegree }) => {
           textAlign="center"
           py={2}
         >
-          <HStack justifyContent="space-between" w={"60%"}>
+          <HStack
+            justifyContent="space-between"
+            w={"60%"}
+            display="flex"
+            flexDir={{
+              base: "column",
+              sm: "row",
+            }}
+          >
             <Heading as="h1" mt={2}>
               {formattedDate[0].toUpperCase() + formattedDate.slice(1)}
             </Heading>
-            <ButtonGroup mt={3} size="sm" variant="outline">
+            <ButtonGroup
+              mt={{
+                base: 0,
+                sm: 3,
+              }}
+              size="sm"
+              variant="outline"
+            >
               <Button
                 borderRadius={"12px"}
                 className={degree == "C" ? "fill-background" : ""}
@@ -97,6 +112,7 @@ const Navbar = ({ localCities, degree, setDegree }) => {
                   setInputCity(e.target.value);
                   searchlocation(e.target.value);
                 }}
+                mb={1}
                 border="1px solid"
                 boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
                 _placeholder={{

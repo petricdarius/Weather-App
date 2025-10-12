@@ -22,7 +22,7 @@ function App() {
       className="scrollable-element"
       bg={bgGradient}
       h={{
-        base: "200vh",
+        base: "500vh",
         sm: "100vh",
       }}
       overflowY="auto"

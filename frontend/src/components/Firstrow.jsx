@@ -155,6 +155,7 @@ function Firstrow({ degree, setDegree }) {
         <SimpleGrid
           border="1px solid rgba(0,0,0,0.08)"
           py={11}
+          pb={0}
           px={10}
           columns={{ base: 1, sm: 5 }}
           boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
